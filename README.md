@@ -1,5 +1,5 @@
 # monster-vue
-
+Click based game made with Vue js and Bulma light weight css framework
 ## Project setup
 ```
 npm install
