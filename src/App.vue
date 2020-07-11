@@ -1,28 +1,50 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container mt-6">
+    <Players v-bind:pHealth="status.playerHealth" v-bind:mHealth="status.monsterHealth" />
+    <Start v-bind:status="status.gameIsRunning" v-on:startGame="start" />
+    <Actions 
+    v-if="status.gameIsRunning" 
+    :status="status" 
+    v-on:attacked="updateStatus" 
+    v-on:specialAttack="updateStatus"
+    v-on:startAgain="updateStatus"
+    v-on:heal="updateStatus"
+    v-on:giveUp="updateStatus"/>
+    <Messages :turns="status.turns" v-if="status.turns.length"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Players from "./components/Players";
+import Start from "./components/Start";
+import Actions from "./components/Actions";
+import Messages from "./components/Messages";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    Players,
+    Start,
+    Actions,
+    Messages
+  },
+  data() {
+    return {
+      status: {
+        playerHealth: 100,
+        monsterHealth: 100,
+        gameIsRunning: false,
+        turns: []
+      }
+    };
+  },
+  methods: {
+    start(data) {      
+      this.status = data;
+      // console.log(data.gameIsRunning);
+    },
+    updateStatus(datas) {
+      this.status = datas;
+    }
   }
-}
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
